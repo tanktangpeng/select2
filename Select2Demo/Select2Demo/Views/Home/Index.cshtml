@@ -1,0 +1,662 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="/Content/jquery-3.1.1/jquery-3.1.1.min.js" type="text/javascript"></script>
+
+<script src="/Content/bootstrap-3.3.0/js/bootstrap.min.js" type="text/javascript"></script>
+<link href="/Content/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+
+<script src="/Content/Select2_4.0.3/dist/js/select2.full.min.js" type="text/javascript"></script>
+<link href="/Content/Select2_4.0.3/dist/css/select2.min.css" rel="stylesheet" type="text/css" />
+<script src="/Content/Select2_4.0.3/dist/js/i18n/zh-CN.js" type="text/javascript"></script>
+<script src="/Content/jquery-placeholders-master/jquery.placeholders.min.js" type="text/javascript"></script>
+
+
+@*<link href="http://select2.github.io/select2/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+<link href="http://select2.github.io/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="http://fanyi.youdao.com/web2/styles/all-packed.css?572877" type="text/css"/>
+<script src="http://select2.github.io/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+
+<script src="http://select2.github.io/select2/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<link href="http://select2.github.io/select2-3.5.3/select2.css?ts=2015-08-29T20%3A09%3A48%2B00%3A00" rel="stylesheet"/>
+<script src="http://select2.github.io/select2-3.5.3/select2.js?ts=2015-08-29T20%3A09%3A48%2B00%3A00" type="text/javascript"></script>*@
+
+
+
+<script  type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#test").select2();
+
+        //--------------------------------------
+        $("#test_1").select2({
+            language: "zh-CN",  //设置 提示语言
+            width: "100%", //设置下拉框的宽度
+            theme: "classic"
+        });
+        //------------------------------------------------------
+
+        $("#test_2").select2({
+            language: "zh-CN", //设置 提示语言
+            width: "100%", //设置下拉框的宽度
+            placeholder: "请选择",
+            minimumInputLength: 10  //最小需要输入多少个字符才进行查询
+        });
+
+        //-------------------------------------------------------
+        $("#test_3").select2({
+            language: "zh-CN", //设置 提示语言
+            width: "100%", //设置下拉框的宽度
+            placeholder: "请选择",
+            tags: true,
+            maximumSelectionLength: 2  //设置最多可以选择多少项
+        });
+
+        //----------------------------------------------------
+        $("#test_4").select2({
+            language: "zh-CN", //设置 提示语言
+            width: "100%", //设置下拉框的宽度
+            placeholder: "请选择",
+            allowClear: true,
+            tags: true,
+            maximumSelectionLength: 2,  //设置最多可以选择多少项
+            templateResult: function (state) {
+            if (!state.id) {
+                 return state.text;
+            }
+             console.log(state.element.getAttribute("imgPath"));
+             var $state = $('<span><img style="width: 30px;height: 20px;" src="' + state.element.getAttribute("imgPath") + '" class="img-flag" /> ' + state.text + '</span>');
+                return $state;
+            },
+            templateSelection: function (state) {
+                if (!state.id) return state.text; // optgroup
+                var $state = $('<span><img style="width: 30px;height: 20px;" src="' + state.element.getAttribute("imgPath") + '" class="img-flag" /> ' + state.text + '</span>');
+                return $state;
+            }
+        });
+
+       //----------------------------------------------------------
+        $("#test_5").select2({
+            language: "zh-CN", //设置 提示语言
+            width: "100%", //设置下拉框的宽度
+            placeholder: "请选择",
+             tags: true,
+            maximumSelectionLength: 3,  //设置最多可以选择多少项
+            templateResult: function (state) {
+                if (!state.id) {
+                    return state.text;
+                }
+                console.log(state.element.getAttribute("imgPath"));
+                var $state = $('<span><img style="width: 30px;height: 20px;" src="' + state.element.getAttribute("imgPath") + '" class="img-flag" /> ' + state.text + '</span>');
+                return $state;
+            },
+            templateSelection: function (state) {
+                if (!state.id) return state.text; // optgroup
+                var $state = $('<span><img style="width: 30px;height: 20px;" src="' + state.element.getAttribute("imgPath") + '" class="img-flag" /> ' + state.text + '</span>');
+                return $state;
+            }
+        }).select2('val', ['HI', 'OR', 'NV']);
+
+        //-------------------------------------------------------------------
+        $("#test_6").select2({
+            language: "zh-CN", //设置 提示语言
+            width: "100%", //设置下拉框的宽度
+            placeholder: "请选择",
+            tags: true,
+            maximumSelectionLength: 3,  //设置最多可以选择多少项
+            templateResult: function (state) {
+                if (!state.id) {
+                    return state.text;
+                }
+                console.log(state.element.getAttribute("imgPath"));
+                var $state = $('<span><img style="width: 30px;height: 20px;" src="' + state.element.getAttribute("imgPath") + '" class="img-flag" /> ' + state.text + '</span>');
+                return $state;
+            },
+            templateSelection: function (state) {
+                if (!state.id) return state.text; // optgroup
+                var $state = $('<span><img style="width: 30px;height: 20px;" src="' + state.element.getAttribute("imgPath") + '" class="img-flag" /> ' + state.text + '</span>');
+                return $state;
+            }
+        });
+        //------------------------------------------------------------------
+        $("#test_7").select2({
+            ajax: {
+                url: "Home/GetArea",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            minimumInputLength: 1, 
+            language: "zh-CN", //设置 提示语言
+            maximumSelectionLength: 3,  //设置最多可以选择多少项
+            placeholder: "请选择",
+            tags: false,  //设置必须存在的选项 才能选中
+            templateResult: function (repo) { //搜索到结果返回后执行，可以控制下拉选项的样式
+                console.log("====================templateResult开始==================");
+                console.log(repo);
+                console.log("====================templateResult结束==================");
+                if (repo.loading) return repo.text;
+                var markup = "<div class=''>" + repo.text + "</div>";
+                return markup;
+            },
+            templateSelection: function (repo) {  //选中某一个选项是执行
+                console.log("------------------templateSelection开始-------------------------------------");
+                console.log( repo);
+                console.log("------------------templateSelection结束-------------------------------------");
+                return repo.full_name || repo.text;
+            }
+        });
+
+
+
+        $("#btn").click(function() {
+            alert($("#test_4").select2("val"));
+        });
+       
+
+        //$("#test_5").prop("disabled", true);  //设置是否可用
+    });
+    </script>
+
+<article >
+    默认
+    <br/>
+    <select style="width: 300px" id="test" class="form-control">
+        <optgroup label="Alaskan/Hawaiian Time Zone">
+            <option value="AK" imgPath="https://select2.github.io/vendor/images/flags/ak.png">Alaska</option>
+            <option value="HI" imgPath="https://select2.github.io/vendor/images/flags/hi.png">Hawaii</option>
+        </optgroup>
+        <optgroup label="Pacific Time Zone">
+            <option value="CA" imgPath="https://select2.github.io/vendor/images/flags/ca.png">California</option>
+            <option value="NV" imgPath="https://select2.github.io/vendor/images/flags/nv.png">Nevada</option>
+            <option value="OR" imgPath="https://select2.github.io/vendor/images/flags/or.png">Oregon</option>
+            <option value="WA" imgPath="https://select2.github.io/vendor/images/flags/wa.png">Washington</option>
+        </optgroup>
+        <optgroup label="Mountain Time Zone">
+            <option value="AZ" imgPath="https://select2.github.io/vendor/images/flags/az.png">Arizona</option>
+            <option value="CO" imgPath="https://select2.github.io/vendor/images/flags/co.png">Colorado</option>
+            <option value="ID" imgPath="https://select2.github.io/vendor/images/flags/id.png">Idaho</option>
+            <option value="MT" imgPath="https://select2.github.io/vendor/images/flags/mt.png">Montana</option>
+            <option value="NE" imgPath="https://select2.github.io/vendor/images/flags/ne.png">Nebraska</option>
+            <option value="NM" imgPath="https://select2.github.io/vendor/images/flags/nm.png">New Mexico</option>
+            <option value="ND" imgPath="https://select2.github.io/vendor/images/flags/nd.png">North Dakota</option>
+            <option value="UT" imgPath="https://select2.github.io/vendor/images/flags/ut.png">Utah</option>
+            <option value="WY" imgPath="https://select2.github.io/vendor/images/flags/wy.png">Wyoming</option>
+        </optgroup>
+        <optgroup label="Central Time Zone">
+            <option value="AL">Alabama</option>
+            <option value="AR">Arkansas</option>
+            <option value="IL">Illinois</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="OK">Oklahoma</option>
+            <option value="SD">South Dakota</option>
+            <option value="TX">Texas</option>
+            <option value="TN">Tennessee</option>
+            <option value="WI">Wisconsin</option>
+        </optgroup>
+        <optgroup label="Eastern Time Zone">
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="IN">Indiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="OH">Ohio</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WV">West Virginia</option>
+        </optgroup>
+    </select>
+    <br/>
+    ----------------------------------------------------
+    <br/>
+    1、可搜索选项
+    <select id="test_1" class="form-control">
+        <optgroup label="Alaskan/Hawaiian Time Zone">
+            <option value="AK" imgPath="https://select2.github.io/vendor/images/flags/ak.png">Alaska</option>
+            <option value="HI" imgPath="https://select2.github.io/vendor/images/flags/hi.png">Hawaii</option>
+        </optgroup>
+        <optgroup label="Pacific Time Zone">
+            <option value="CA" imgPath="https://select2.github.io/vendor/images/flags/ca.png">California</option>
+            <option value="NV" imgPath="https://select2.github.io/vendor/images/flags/nv.png">Nevada</option>
+            <option value="OR" imgPath="https://select2.github.io/vendor/images/flags/or.png">Oregon</option>
+            <option value="WA" imgPath="https://select2.github.io/vendor/images/flags/wa.png">Washington</option>
+        </optgroup>
+        <optgroup label="Mountain Time Zone">
+            <option value="AZ" imgPath="https://select2.github.io/vendor/images/flags/az.png">Arizona</option>
+            <option value="CO" imgPath="https://select2.github.io/vendor/images/flags/co.png">Colorado</option>
+            <option value="ID" imgPath="https://select2.github.io/vendor/images/flags/id.png">Idaho</option>
+            <option value="MT" imgPath="https://select2.github.io/vendor/images/flags/mt.png">Montana</option>
+            <option value="NE" imgPath="https://select2.github.io/vendor/images/flags/ne.png">Nebraska</option>
+            <option value="NM" imgPath="https://select2.github.io/vendor/images/flags/nm.png">New Mexico</option>
+            <option value="ND" imgPath="https://select2.github.io/vendor/images/flags/nd.png">North Dakota</option>
+            <option value="UT" imgPath="https://select2.github.io/vendor/images/flags/ut.png">Utah</option>
+            <option value="WY" imgPath="https://select2.github.io/vendor/images/flags/wy.png">Wyoming</option>
+        </optgroup>
+        <optgroup label="Central Time Zone">
+            <option value="AL">Alabama</option>
+            <option value="AR">Arkansas</option>
+            <option value="IL">Illinois</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="OK">Oklahoma</option>
+            <option value="SD">South Dakota</option>
+            <option value="TX">Texas</option>
+            <option value="TN">Tennessee</option>
+            <option value="WI">Wisconsin</option>
+        </optgroup>
+        <optgroup label="Eastern Time Zone">
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="IN">Indiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="OH">Ohio</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WV">West Virginia</option>
+        </optgroup>
+    </select>
+</article>
+
+================================
+<br/>
+2、可搜索选项（有搜索关键字控制）
+<article>
+    <select id="test_2" class="form-control">
+        <optgroup label="Alaskan/Hawaiian Time Zone">
+            <option value="AK" imgPath="https://select2.github.io/vendor/images/flags/ak.png">Alaska</option>
+            <option value="HI" imgPath="https://select2.github.io/vendor/images/flags/hi.png">Hawaii</option>
+        </optgroup>
+        <optgroup label="Pacific Time Zone">
+            <option value="CA" imgPath="https://select2.github.io/vendor/images/flags/ca.png">California</option>
+            <option value="NV" imgPath="https://select2.github.io/vendor/images/flags/nv.png">Nevada</option>
+            <option value="OR" imgPath="https://select2.github.io/vendor/images/flags/or.png">Oregon</option>
+            <option value="WA" imgPath="https://select2.github.io/vendor/images/flags/wa.png">Washington</option>
+        </optgroup>
+        <optgroup label="Mountain Time Zone">
+            <option value="AZ" imgPath="https://select2.github.io/vendor/images/flags/az.png">Arizona</option>
+            <option value="CO" imgPath="https://select2.github.io/vendor/images/flags/co.png">Colorado</option>
+            <option value="ID" imgPath="https://select2.github.io/vendor/images/flags/id.png">Idaho</option>
+            <option value="MT" imgPath="https://select2.github.io/vendor/images/flags/mt.png">Montana</option>
+            <option value="NE" imgPath="https://select2.github.io/vendor/images/flags/ne.png">Nebraska</option>
+            <option value="NM" imgPath="https://select2.github.io/vendor/images/flags/nm.png">New Mexico</option>
+            <option value="ND" imgPath="https://select2.github.io/vendor/images/flags/nd.png">North Dakota</option>
+            <option value="UT" imgPath="https://select2.github.io/vendor/images/flags/ut.png">Utah</option>
+            <option value="WY" imgPath="https://select2.github.io/vendor/images/flags/wy.png">Wyoming</option>
+        </optgroup>
+        <optgroup label="Central Time Zone">
+            <option value="AL">Alabama</option>
+            <option value="AR">Arkansas</option>
+            <option value="IL">Illinois</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="OK">Oklahoma</option>
+            <option value="SD">South Dakota</option>
+            <option value="TX">Texas</option>
+            <option value="TN">Tennessee</option>
+            <option value="WI">Wisconsin</option>
+        </optgroup>
+        <optgroup label="Eastern Time Zone">
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="IN">Indiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="OH">Ohio</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WV">West Virginia</option>
+        </optgroup>
+    </select>
+</article>
+===============================
+<br/>
+3、多选
+<article>
+    <select id="test_3" class="form-control js-example-placeholder-multiple js-states select2-hidden-accessible" multiple="multiple">
+        <optgroup label="Alaskan/Hawaiian Time Zone">
+            <option value="AK" imgPath="https://select2.github.io/vendor/images/flags/ak.png">Alaska</option>
+            <option value="HI" imgPath="https://select2.github.io/vendor/images/flags/hi.png">Hawaii</option>
+        </optgroup>
+        <optgroup label="Pacific Time Zone">
+            <option value="CA" imgPath="https://select2.github.io/vendor/images/flags/ca.png">California</option>
+            <option value="NV" imgPath="https://select2.github.io/vendor/images/flags/nv.png">Nevada</option>
+            <option value="OR" imgPath="https://select2.github.io/vendor/images/flags/or.png">Oregon</option>
+            <option value="WA" imgPath="https://select2.github.io/vendor/images/flags/wa.png">Washington</option>
+        </optgroup>
+        <optgroup label="Mountain Time Zone">
+            <option value="AZ" imgPath="https://select2.github.io/vendor/images/flags/az.png">Arizona</option>
+            <option value="CO" imgPath="https://select2.github.io/vendor/images/flags/co.png">Colorado</option>
+            <option value="ID" imgPath="https://select2.github.io/vendor/images/flags/id.png">Idaho</option>
+            <option value="MT" imgPath="https://select2.github.io/vendor/images/flags/mt.png">Montana</option>
+            <option value="NE" imgPath="https://select2.github.io/vendor/images/flags/ne.png">Nebraska</option>
+            <option value="NM" imgPath="https://select2.github.io/vendor/images/flags/nm.png">New Mexico</option>
+            <option value="ND" imgPath="https://select2.github.io/vendor/images/flags/nd.png">North Dakota</option>
+            <option value="UT" imgPath="https://select2.github.io/vendor/images/flags/ut.png">Utah</option>
+            <option value="WY" imgPath="https://select2.github.io/vendor/images/flags/wy.png">Wyoming</option>
+        </optgroup>
+        <optgroup label="Central Time Zone">
+            <option value="AL">Alabama</option>
+            <option value="AR">Arkansas</option>
+            <option value="IL">Illinois</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="OK">Oklahoma</option>
+            <option value="SD">South Dakota</option>
+            <option value="TX">Texas</option>
+            <option value="TN">Tennessee</option>
+            <option value="WI">Wisconsin</option>
+        </optgroup>
+        <optgroup label="Eastern Time Zone">
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="IN">Indiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="OH">Ohio</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WV">West Virginia</option>
+        </optgroup>
+    </select>
+</article>
+
+===============================
+<br/>
+4、图文选项
+<article>
+    <select id="test_4" class="js-example-templating js-states form-control select2-hidden-accessible" multiple="multiple">
+        <optgroup label="Alaskan/Hawaiian Time Zone">
+            <option value="AK" imgPath="https://select2.github.io/vendor/images/flags/ak.png">Alaska</option>
+            <option value="HI" imgPath="https://select2.github.io/vendor/images/flags/hi.png">Hawaii</option>
+        </optgroup>
+        <optgroup label="Pacific Time Zone">
+            <option value="CA" imgPath="https://select2.github.io/vendor/images/flags/ca.png">California</option>
+            <option value="NV" imgPath="https://select2.github.io/vendor/images/flags/nv.png">Nevada</option>
+            <option value="OR" imgPath="https://select2.github.io/vendor/images/flags/or.png">Oregon</option>
+            <option value="WA" imgPath="https://select2.github.io/vendor/images/flags/wa.png">Washington</option>
+        </optgroup>
+        <optgroup label="Mountain Time Zone">
+            <option value="AZ" imgPath="https://select2.github.io/vendor/images/flags/az.png">Arizona</option>
+            <option value="CO" imgPath="https://select2.github.io/vendor/images/flags/co.png">Colorado</option>
+            <option value="ID" imgPath="https://select2.github.io/vendor/images/flags/id.png">Idaho</option>
+            <option value="MT" imgPath="https://select2.github.io/vendor/images/flags/mt.png">Montana</option>
+            <option value="NE" imgPath="https://select2.github.io/vendor/images/flags/ne.png">Nebraska</option>
+            <option value="NM" imgPath="https://select2.github.io/vendor/images/flags/nm.png">New Mexico</option>
+            <option value="ND" imgPath="https://select2.github.io/vendor/images/flags/nd.png">North Dakota</option>
+            <option value="UT" imgPath="https://select2.github.io/vendor/images/flags/ut.png">Utah</option>
+            <option value="WY" imgPath="https://select2.github.io/vendor/images/flags/wy.png">Wyoming</option>
+        </optgroup>
+        <optgroup label="Central Time Zone">
+            <option value="AL">Alabama</option>
+            <option value="AR">Arkansas</option>
+            <option value="IL">Illinois</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="OK">Oklahoma</option>
+            <option value="SD">South Dakota</option>
+            <option value="TX">Texas</option>
+            <option value="TN">Tennessee</option>
+            <option value="WI">Wisconsin</option>
+        </optgroup>
+        <optgroup label="Eastern Time Zone">
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="IN">Indiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="OH">Ohio</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WV">West Virginia</option>
+        </optgroup>
+    </select>
+</article>
+<br/>
+======================================
+<br/>
+5、默认选中某个选项
+<article>
+    <select id="test_5" class="form-control" multiple="multiple">
+        <optgroup label="Alaskan/Hawaiian Time Zone">
+            <option value="AK" imgPath="https://select2.github.io/vendor/images/flags/ak.png">Alaska</option>
+            <option value="HI" imgPath="https://select2.github.io/vendor/images/flags/hi.png">Hawaii</option>
+        </optgroup>
+        <optgroup label="Pacific Time Zone">
+            <option value="CA" imgPath="https://select2.github.io/vendor/images/flags/ca.png">California</option>
+            <option value="NV" imgPath="https://select2.github.io/vendor/images/flags/nv.png">Nevada</option>
+            <option value="OR" imgPath="https://select2.github.io/vendor/images/flags/or.png">Oregon</option>
+            <option value="WA" imgPath="https://select2.github.io/vendor/images/flags/wa.png">Washington</option>
+        </optgroup>
+        <optgroup label="Mountain Time Zone">
+            <option value="AZ" imgPath="https://select2.github.io/vendor/images/flags/az.png">Arizona</option>
+            <option value="CO" imgPath="https://select2.github.io/vendor/images/flags/co.png">Colorado</option>
+            <option value="ID" imgPath="https://select2.github.io/vendor/images/flags/id.png">Idaho</option>
+            <option value="MT" imgPath="https://select2.github.io/vendor/images/flags/mt.png">Montana</option>
+            <option value="NE" imgPath="https://select2.github.io/vendor/images/flags/ne.png">Nebraska</option>
+            <option value="NM" imgPath="https://select2.github.io/vendor/images/flags/nm.png">New Mexico</option>
+            <option value="ND" imgPath="https://select2.github.io/vendor/images/flags/nd.png">North Dakota</option>
+            <option value="UT" imgPath="https://select2.github.io/vendor/images/flags/ut.png">Utah</option>
+            <option value="WY" imgPath="https://select2.github.io/vendor/images/flags/wy.png">Wyoming</option>
+        </optgroup>
+        <optgroup label="Central Time Zone">
+            <option value="AL">Alabama</option>
+            <option value="AR">Arkansas</option>
+            <option value="IL">Illinois</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="OK">Oklahoma</option>
+            <option value="SD">South Dakota</option>
+            <option value="TX">Texas</option>
+            <option value="TN">Tennessee</option>
+            <option value="WI">Wisconsin</option>
+        </optgroup>
+        <optgroup label="Eastern Time Zone">
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="IN">Indiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="OH">Ohio</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WV">West Virginia</option>
+        </optgroup>
+    </select>
+</article>
+<br/>
+=========================================
+<br/>
+6、某些选项不能选中
+<select id="test_6" class="form-control">
+    <optgroup label="Alaskan/Hawaiian Time Zone">
+        <option value="AK" imgPath="https://select2.github.io/vendor/images/flags/ak.png">Alaska</option>
+        <option value="HI" imgPath="https://select2.github.io/vendor/images/flags/hi.png">Hawaii</option>
+    </optgroup>
+    <optgroup label="Pacific Time Zone">
+        <option value="CA" disabled="disabled" imgPath="https://select2.github.io/vendor/images/flags/ca.png">California</option>
+        <option value="NV" imgPath="https://select2.github.io/vendor/images/flags/nv.png">Nevada</option>
+        <option value="OR" imgPath="https://select2.github.io/vendor/images/flags/or.png">Oregon</option>
+        <option value="WA" disabled="disabled" imgPath="https://select2.github.io/vendor/images/flags/wa.png">Washington</option>
+    </optgroup>
+    <optgroup label="Mountain Time Zone">
+        <option value="AZ" imgPath="https://select2.github.io/vendor/images/flags/az.png">Arizona</option>
+        <option value="CO" imgPath="https://select2.github.io/vendor/images/flags/co.png">Colorado</option>
+        <option value="ID" imgPath="https://select2.github.io/vendor/images/flags/id.png">Idaho</option>
+        <option value="MT" imgPath="https://select2.github.io/vendor/images/flags/mt.png">Montana</option>
+        <option value="NE" imgPath="https://select2.github.io/vendor/images/flags/ne.png">Nebraska</option>
+        <option value="NM" imgPath="https://select2.github.io/vendor/images/flags/nm.png">New Mexico</option>
+        <option value="ND" imgPath="https://select2.github.io/vendor/images/flags/nd.png">North Dakota</option>
+        <option value="UT" imgPath="https://select2.github.io/vendor/images/flags/ut.png">Utah</option>
+        <option value="WY" imgPath="https://select2.github.io/vendor/images/flags/wy.png">Wyoming</option>
+    </optgroup>
+    <optgroup label="Central Time Zone">
+        <option value="AL">Alabama</option>
+        <option value="AR">Arkansas</option>
+        <option value="IL">Illinois</option>
+        <option value="IA">Iowa</option>
+        <option value="KS">Kansas</option>
+        <option value="KY">Kentucky</option>
+        <option value="LA">Louisiana</option>
+        <option value="MN">Minnesota</option>
+        <option value="MS">Mississippi</option>
+        <option value="MO">Missouri</option>
+        <option value="OK">Oklahoma</option>
+        <option value="SD">South Dakota</option>
+        <option value="TX">Texas</option>
+        <option value="TN">Tennessee</option>
+        <option value="WI">Wisconsin</option>
+    </optgroup>
+    <optgroup label="Eastern Time Zone">
+        <option value="CT">Connecticut</option>
+        <option value="DE">Delaware</option>
+        <option value="FL">Florida</option>
+        <option value="GA">Georgia</option>
+        <option value="IN">Indiana</option>
+        <option value="ME">Maine</option>
+        <option value="MD">Maryland</option>
+        <option value="MA">Massachusetts</option>
+        <option value="MI">Michigan</option>
+        <option value="NH">New Hampshire</option>
+        <option value="NJ">New Jersey</option>
+        <option value="NY">New York</option>
+        <option value="NC">North Carolina</option>
+        <option value="OH">Ohio</option>
+        <option value="PA">Pennsylvania</option>
+        <option value="RI">Rhode Island</option>
+        <option value="SC">South Carolina</option>
+        <option value="VT">Vermont</option>
+        <option value="VA">Virginia</option>
+        <option value="WV">West Virginia</option>
+    </optgroup>
+</select>
+
+<br/>
+======================================
+<br/>
+7、搜索动态加载下拉选项功能（即在用户输入搜索内容时动态去后台取数据）
+<article>
+    <select id="test_7" class=" form-control " multiple="multiple">
+       
+    </select>
+</article>
+<br/>
+=========================================
+
+<button id="btn">获取选中的值</button>
+
