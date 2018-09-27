@@ -1,0 +1,81 @@
+editproperty : {
+		            		type : 'select2',
+		            		select2: {
+		                        width: 145,
+		                        placeholder: '请选择...',
+		                        allowClear: true,
+		                        ajax: {
+		                            url: $.constantCache.getUrl("basproductlist"),
+		                            data: function (params,page) {//params 输入框输入的内容 page 页数
+		                            	var query = {
+			                                pageNo: page,
+			                                pageSize: 20
+		                            	}
+		                            	query.queryObject= {
+	                            				basProduct: {}
+	                            		}
+		                            	if(params){
+		                            		query.queryObject.basProduct= {
+		                            			extendQuery : params
+		                            		}
+		                            	}
+		                            	return JSON.stringify(query);
+		                            },
+		                            type:"POST",
+		                            results : function(data, params) {
+		                            	console.log(data);
+		                                params.pageNo = params.pageNo || 1;
+		                                var result = [];
+		                                if(data.data && data.data.list){
+		                                	data.data.list.forEach(function(ele,index){//20180726
+		                                		result.push({id: ele.id+"###"+ele.basProduct.productName+"###"+ele.basProduct.productCode, text: ele.basProduct.productCode+' '+ele.basProduct.productName});
+			                                });
+		                                }
+		                                return {
+		                                    results : result,
+		                                    more: (params * 20) < data.data.count //每页20条数据 下拉加载下一页
+		                                };
+		                                
+		                            }
+		                    	}
+		                    },
+
+
+
+
+ <input type="text" id="thisid" style="width:300px" class="input-xlarge" />
+
+$("#thisid").select2({
+			 language:"zh-CN",
+			 placeholder: 'Search for a repository',
+		 ajax: {
+			    url: '${ctx}/order/purOrdermaster/sss',
+			    dataType: 'json',
+			    type: "post",
+			    delay: 250, 
+			    data: function (params, page) {
+			      return {
+			    	  likeId: params // search term
+			        //page: params.page
+			      };
+			    },
+			    results: function (data, params) {
+			     
+			    	var items=data.mapList; //json数组
+			    	var itemList = [];
+			    	for(var i =0; i < items.length; i++){
+			    	itemList.push({id: items[i].id, text: items[i].skuName});
+			    	}
+			    	return {
+			    		results: itemList
+			    		};
+			    },
+			    cache: false
+			  },
+			 
+			  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+			  /* templateResult:function formatRepo(repo){return repo.text;},
+			  templateSelection :function formatRepoSelection(repo){return repo.text;} */
+				formatResult: function formatRepo(repo){return repo.text;},
+			  formatSelection: function formatRepoSelection(repo){return repo.text;} 
+		}); 
